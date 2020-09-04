@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>br.com.jitec.atask</groupId>
+		<artifactId>atask</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>atask-app</artifactId>
+	<packaging>ear</packaging>
+
+	<name>atask-app</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>br.com.jitec.atask</groupId>
+			<artifactId>atask-rest</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<applicationName>${project.artifactId}</applicationName>
+					<finalName>${project.artifactId}</finalName>
+					<modules>
+						<!-- eliminates use of the version in the EJB JNDI name -->
+						<!-- <ejbModule> -->
+						<!-- <groupId>br.com.jitec.atask</groupId> -->
+						<!-- <artifactId>atask-ejb</artifactId> -->
+						<!-- <bundleFileName>atask-ejb.jar</bundleFileName> -->
+						<!-- </ejbModule> -->
+						<webModule>
+							<!-- eliminates use of the version -->
+							<groupId>br.com.jitec.atask</groupId>
+							<artifactId>atask-rest</artifactId>
+							<bundleFileName>atask-rest.war</bundleFileName>
+							<contextRoot>/atask-ws</contextRoot>
+						</webModule>
+					</modules>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>2.1.0.Beta1</version>
+				<configuration>
+					<filename>${project.build.finalName}.ear</filename>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>
