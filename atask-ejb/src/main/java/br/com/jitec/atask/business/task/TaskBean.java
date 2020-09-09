@@ -1,6 +1,7 @@
 package br.com.jitec.atask.business.task;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import javax.jms.JMSContext;
 import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 @Stateless
 @Local(TaskLocal.class)
@@ -24,6 +26,27 @@ public class TaskBean implements TaskLocal{
 	
 	@PersistenceContext
 	private EntityManager em;
+
+	@Override
+	public List<Task> getAll() {
+		return em.createQuery("Select t from Task t", Task.class).getResultList();
+	}
+
+	@Override
+	public List<Task> getPending() {
+		TypedQuery<Task> query = em.createQuery("Select t from Task t where t.status = :pendingStatus", Task.class);
+		query.setParameter("pendingStatus", Status.PENDING);
+		return query.getResultList();
+	}
+
+	@Override
+	public Task getTask(Integer id) {
+		Task task = em.find(Task.class, id);
+		if (task != null && !Status.DONE.equals(task.getStatus())) {
+			throw new TaskInProcessException("Task is processing, not Done yet!");
+		}
+		return task;
+	}
 
 	@Override
 	public Task newTask() {
