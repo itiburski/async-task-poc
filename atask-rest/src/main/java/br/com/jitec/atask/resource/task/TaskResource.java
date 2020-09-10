@@ -29,7 +29,7 @@ public class TaskResource {
 	public Response getTask(@PathParam("id") Integer id) {
 		Task task = taskBean.getTask(id);
 		if (task == null) {
-			return Response.status(Status.NO_CONTENT).build();
+			return Response.status(Status.NOT_FOUND).build();
 		}
 		return Response.ok().entity(task).build();
 	}
