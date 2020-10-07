@@ -4,8 +4,8 @@
 	<!-- Define persistence unit -->
 	<persistence-unit name="atask-pu">
 		<jta-data-source>java:jboss/datasources/TaskDS</jta-data-source>
-<!-- 		<properties> -->
-<!-- 			<property name="javax.persistence.schema-generation.database.action" value="create" />			 -->
-<!-- 		</properties> -->
+		<properties>
+			<property name="javax.persistence.schema-generation.database.action" value="update" />
+		</properties>
 	</persistence-unit>
 </persistence>
