@@ -4,12 +4,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.jms.JMSContext;
-import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -18,14 +15,11 @@ import javax.persistence.TypedQuery;
 @Local(TaskLocal.class)
 public class TaskBean implements TaskLocal{
 
-	@Resource(mappedName = "java:/jms/queue/TaskQueue")
-	private Queue taskQueue;
-	
-	@Inject
-	private JMSContext context;
-	
 	@PersistenceContext
 	private EntityManager em;
+
+	@EJB
+	private TaskQueueProducerBeanLocal taskQueueProducerBean;
 
 	@Override
 	public List<Task> getAll() {
@@ -54,17 +48,16 @@ public class TaskBean implements TaskLocal{
 		task.setStatus(Status.PENDING);
 		em.persist(task);
 
-		context.createProducer().send(taskQueue, task);
-		System.out.println("Task " + task.getId() + " sent to taskQueue");
+		taskQueueProducerBean.send(task);
 
 		return task;
 	}
 
 	@Override
 	public void processTask(Task task) {
-			System.out.println("Start processing task " + task.getId() + " at " + Calendar.getInstance().getTime());
+			System.out.println("Start processing task #" + task.getId() + " at " + Calendar.getInstance().getTime());
 			slowProcess();
-			System.out.println("Finish processing task " + task.getId() + " at " + Calendar.getInstance().getTime());
+			System.out.println("Finish processing task #" + task.getId() + " at " + Calendar.getInstance().getTime());
 
 			task.setStatus(Status.DONE);
 			em.merge(task);
