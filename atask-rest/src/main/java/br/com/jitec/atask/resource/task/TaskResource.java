@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.com.jitec.atask.business.task.Task;
-import br.com.jitec.atask.business.task.TaskLocal;
+import br.com.jitec.atask.business.task.TaskBeanLocal;
 
 @Path("/task")
 @Consumes({ MediaType.APPLICATION_JSON })
@@ -22,7 +22,7 @@ import br.com.jitec.atask.business.task.TaskLocal;
 public class TaskResource {
 
 	@EJB
-	private TaskLocal taskBean;
+	private TaskBeanLocal taskBean;
 
 	@GET
 	@Path("/{id}")

@@ -12,8 +12,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 @Stateless
-@Local(TaskLocal.class)
-public class TaskBean implements TaskLocal{
+@Local(TaskBeanLocal.class)
+public class TaskBean implements TaskBeanLocal {
 
 	@PersistenceContext
 	private EntityManager em;

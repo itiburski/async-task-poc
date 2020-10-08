@@ -2,7 +2,7 @@ package br.com.jitec.atask.business.task;
 
 import java.util.List;
 
-public interface TaskLocal {
+public interface TaskBeanLocal {
 
 	List<Task> getAll();
 

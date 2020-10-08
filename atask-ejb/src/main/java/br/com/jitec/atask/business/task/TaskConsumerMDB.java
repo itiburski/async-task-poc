@@ -8,15 +8,15 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
-@MessageDriven(name="TaskProcessor", activationConfig = {
+@MessageDriven(name="TaskConsumerMDB", activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
 		@ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
 		@ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:/jms/queue/TaskQueue")
 })
-public class TaskProcessor implements MessageListener {
+public class TaskConsumerMDB implements MessageListener {
 
 	@EJB
-	private TaskLocal taskBean;
+	private TaskBeanLocal taskBean;
 	
 	@Override
 	public void onMessage(Message message) {
