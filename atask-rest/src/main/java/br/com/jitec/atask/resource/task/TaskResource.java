@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response.Status;
 import br.com.jitec.atask.business.task.Task;
 import br.com.jitec.atask.business.task.TaskBeanLocal;
 
-@Path("/task")
+@Path("/tasks")
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
 public class TaskResource {
